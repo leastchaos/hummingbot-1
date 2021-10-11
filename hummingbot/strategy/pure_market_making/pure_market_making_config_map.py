@@ -11,6 +11,8 @@ from hummingbot.client.config.config_validators import (
 from hummingbot.client.settings import (
     required_exchanges,
     EXAMPLE_PAIRS,
+    EXCHANGES,
+    DERIVATIVES
 )
 from hummingbot.client.config.global_config_map import (
     using_bamboo_coordinator_mode,
@@ -78,7 +80,8 @@ def price_source_market_prompt() -> str:
 def validate_price_source_exchange(value: str) -> Optional[str]:
     if value == pure_market_making_config_map.get("exchange").value:
         return "Price source exchange cannot be the same as maker exchange."
-    return validate_exchange(value)
+    if value not in EXCHANGES and value not in DERIVATIVES:
+        return f"Invalid exchange, please choose value from {EXCHANGES,DERIVATIVES}"
 
 
 def on_validated_price_source_exchange(value: str):
