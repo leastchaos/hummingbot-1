@@ -81,7 +81,7 @@ def validate_price_source_exchange(value: str) -> Optional[str]:
     if value == pure_market_making_config_map.get("exchange").value:
         return "Price source exchange cannot be the same as maker exchange."
     if value not in EXCHANGES and value not in DERIVATIVES:
-        return f"Invalid exchange, please choose value from {EXCHANGES,DERIVATIVES}"
+        return f"Invalid exchange, please choose value from {EXCHANGES, DERIVATIVES}"
 
 
 def on_validated_price_source_exchange(value: str):
