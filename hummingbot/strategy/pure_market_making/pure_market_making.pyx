@@ -151,6 +151,9 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._last_own_trade_price = Decimal('nan')
         self._should_wait_order_cancel_confirmation = should_wait_order_cancel_confirmation
 
+        # deprecation warning for order level script user
+        self._last_order_level_warning_timestamp = 0
+        
         self.c_add_markets([market_info.market])
 
     def all_markets_ready(self):
@@ -235,7 +238,42 @@ cdef class PureMarketMakingStrategy(StrategyBase):
         self._order_level_amount = value
 
     @property
-    def bid_order_level_spread(self) -> Decimal:
+    def order_level_spread(self) -> Decimal:
+        '''
+        This is only kept to prevent scripts from breaking and 
+        start warning about deprecation of this property for script users
+        bid_order_level_spread is used as the return
+        '''
+        current_tick = self._current_timestamp
+        last_tick = self._last_order_level_warning_timestamp
+        
+        if current_tick > last_tick:
+            self._last_order_level_warning_timestamp = current_tick + self._status_report_interval
+            self.log_with_clock(
+                logging.WARNING, 
+                "order_level_spread is deprecated. "
+                "Please use bid_order_level_spread and ask_order_level_spread. "
+                "Returning bid_order_level_spread")
+        return self._bid_order_level_spread
+
+    @order_level_spread.setter
+    def order_level_spread(self, value: Decimal):
+        current_tick = self._current_timestamp
+        last_tick = self._last_order_level_warning_timestamp
+        
+        if current_tick > last_tick:
+            self._last_order_level_warning_timestamp = current_tick + self._status_report_interval
+            self.log_with_clock(
+                logging.WARNING, 
+                "order_level_spread is deprecated. "
+                "Please use bid_order_level_spread and ask_order_level_spread. "
+                "Setting both ask_order_level_spread and bid_order_level_spread as [value]")
+
+            self._bid_order_level_spread = value
+            self._ask_order_level_spread = value
+
+    @property
+    def bid_order_level_spread(self) -> List[Decimal]:
         return self._bid_order_level_spread
 
     @bid_order_level_spread.setter
