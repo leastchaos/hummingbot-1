@@ -20,17 +20,18 @@ from hummingbot.connector.exchange_base cimport ExchangeBase
 from hummingbot.core.clock cimport Clock
 from hummingbot.core.data_type.limit_order cimport LimitOrder
 from hummingbot.core.data_type.limit_order import LimitOrder
-from hummingbot.core.event.events import OrderType, PriceType, TradeType
+from hummingbot.core.data_type.common import OrderType, PriceType, TradeType
 from hummingbot.core.network_iterator import NetworkStatus
 from hummingbot.core.utils import map_df_to_str
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
 from hummingbot.strategy.strategy_base import StrategyBase
 from hummingbot.strategy.utils import order_age
+from hummingbot.strategy.order_tracker import OrderTracker
+
 from .data_types import (
     PriceSize,
     Proposal,
 )
-from .fixed_grid_order_tracker import FixedGridOrderTracker
 
 NaN = float("nan")
 s_decimal_zero = Decimal(0)
@@ -72,7 +73,7 @@ cdef class FixedGridStrategy(StrategyBase):
                     ):
         if grid_price_ceiling < grid_price_floor:
             raise ValueError("Parameter grid_price_ceiling cannot be lower than grid_price_floor.")
-        self._sb_order_tracker = FixedGridOrderTracker()
+        self._sb_order_tracker = OrderTracker()
         self._market_info = market_info
         self._start_order_spread = start_order_spread
         self._n_levels = n_levels
@@ -243,15 +244,15 @@ cdef class FixedGridStrategy(StrategyBase):
         return self._start_order_buy
 
     @property
-    def base_asset(self):
+    def base_asset(self) -> str:
         return self._market_info.base_asset
 
     @property
-    def quote_asset(self):
+    def quote_asset(self) -> str:
         return self._market_info.quote_asset
 
     @property
-    def trading_pair(self):
+    def trading_pair(self) -> str: 
         return self._market_info.trading_pair
 
 
@@ -352,27 +353,6 @@ cdef class FixedGridStrategy(StrategyBase):
             ])
 
         return pd.DataFrame(data=data, columns=columns)
-
-    def market_status_data_frame(self, market_trading_pair_tuples: List[MarketTradingPairTuple]) -> pd.DataFrame:
-        markets_data = []
-        markets_columns = ["Exchange", "Market", "Best Bid", "Best Ask", f"Ref Price (Mid)"]
-        market_books = [(self._market_info.market, self._market_info.trading_pair)]
-
-        for market, trading_pair in market_books:
-            bid_price = market.get_price(trading_pair, False)
-            ask_price = market.get_price(trading_pair, True)
-            ref_price = float("nan")
-        
-            ref_price = self.get_mid_price()
-    
-            markets_data.append([
-                market.display_name,
-                trading_pair,
-                float(bid_price),
-                float(ask_price),
-                float(ref_price)
-            ])
-        return pd.DataFrame(data=markets_data, columns=markets_columns).replace(np.nan, '', regex=True)
 
     def grid_status_data_frame(self) -> pd.DataFrame:
         grid_data = []
