@@ -9,7 +9,7 @@ from typing import Any, AsyncIterable, Dict, List, Optional
 
 import aiohttp
 from libc.stdint cimport int64_t
-from libcpp cimport bool
+from libcpp cimport bool as cppbool
 
 from hummingbot.connector.exchange.bitfinex import (
     AFF_CODE,
