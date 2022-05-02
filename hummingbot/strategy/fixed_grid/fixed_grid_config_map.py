@@ -72,13 +72,13 @@ fixed_grid_config_map = {
                   prompt_on_new=True),
     "grid_price_ceiling":
         ConfigVar(key="grid_price_ceiling",
-                  prompt="Enter the ceiling price for the grid (top most order)",
+                  prompt="Enter the ceiling price for the grid (top most order) >>> ",
                   type_str="decimal",
                   validator=validate_price_floor_ceiling,
                   prompt_on_new=True),
     "grid_price_floor":
         ConfigVar(key="grid_price_floor",
-                  prompt="Enter the floor price for the grid (bottom most order)",
+                  prompt="Enter the floor price for the grid (bottom most order) >>> ",
                   type_str="decimal",
                   validator=validate_price_floor_ceiling,
                   prompt_on_new=True),
