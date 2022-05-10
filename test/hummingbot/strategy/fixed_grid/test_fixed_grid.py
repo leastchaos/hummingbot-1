@@ -46,7 +46,7 @@ class FixedGridUnitTest(unittest.TestCase):
         self.mid_price = 100
         self.start_order_spread = 0.01
         self.order_refresh_time = 30
-        
+
         self.n_levels = 10
         self.grid_price_ceiling = 200
         self.grid_price_floor = 20
@@ -104,7 +104,7 @@ class FixedGridUnitTest(unittest.TestCase):
             order_amount=Decimal("5"),
             order_refresh_time=10.0
         )
-     
+
     def simulate_maker_market_trade(
             self, is_buy: bool, quantity: Decimal, price: Decimal, market: Optional[MockPaperExchange] = None,
     ):
@@ -127,14 +127,14 @@ class FixedGridUnitTest(unittest.TestCase):
         self.clock.backtest_til(self.start_timestamp + self.clock_tick_size)
         self.assertEqual(0, len(strategy.active_buys))
         self.assertEqual(1, len(strategy.active_sells))
-        self.assertEqual(5, strategy.current_level+1)
+        self.assertEqual(5, strategy.current_level + 1)
         self.assertEqual(260, strategy.base_inv_levels[strategy.current_level])
         self.assertEqual(10400, strategy.quote_inv_levels[strategy.current_level])
         self.assertEqual(104, strategy._quote_inv_levels_current_price[strategy.current_level])
 
         sell_1 = strategy.active_sells[0]
         self.assertEqual(101, sell_1.price)
-        self.assertAlmostEqual(Decimal((104-50)*1.05), sell_1.quantity)
+        self.assertAlmostEqual(Decimal((104 - 50) * 1.05), sell_1.quantity)
 
         # After order_refresh_time, a new set of orders is created
         self.clock.backtest_til(self.start_timestamp + 35.0)
@@ -176,14 +176,14 @@ class FixedGridUnitTest(unittest.TestCase):
         self.clock.backtest_til(self.start_timestamp + self.clock_tick_size)
         self.assertEqual(1, len(strategy.active_buys))
         self.assertEqual(0, len(strategy.active_sells))
-        self.assertEqual(1, strategy.current_level+1)
+        self.assertEqual(1, strategy.current_level + 1)
         self.assertEqual(540, strategy.base_inv_levels[strategy.current_level])
         self.assertEqual(0, strategy.quote_inv_levels[strategy.current_level])
         self.assertEqual(0, strategy._quote_inv_levels_current_price[strategy.current_level])
 
         buy_1 = strategy.active_buys[0]
         self.assertEqual(99, buy_1.price)
-        self.assertAlmostEqual(Decimal((60*9-500)*1.05), buy_1.quantity)
+        self.assertAlmostEqual(Decimal((60 * 9 - 500) * 1.05), buy_1.quantity)
 
         # After order_refresh_time, a new set of orders is created
         self.clock.backtest_til(self.start_timestamp + 35.0)
@@ -211,7 +211,7 @@ class FixedGridUnitTest(unittest.TestCase):
         self.assertEqual(7, len(strategy.active_sells))
 
 
-        # # Simulate grid buy order filled
+        # Simulate grid buy order filled
         self.simulate_maker_market_trade(False, 60.0, 119.5)
         self.assertEqual(1, len(strategy.active_buys))
         self.assertEqual(8, len(strategy.active_sells))
@@ -223,7 +223,7 @@ class FixedGridUnitTest(unittest.TestCase):
         self.market.set_balance("ETH", Decimal("5000"))
 
         self.clock.backtest_til(self.start_timestamp + self.clock_tick_size)
-        self.assertEqual(7, strategy.current_level+1)
+        self.assertEqual(7, strategy.current_level + 1)
         self.assertEqual(6, len(strategy.active_buys))
         self.assertEqual(3, len(strategy.active_sells))
 
@@ -234,9 +234,8 @@ class FixedGridUnitTest(unittest.TestCase):
         self.assertEqual(2, len(strategy.active_sells))
 
 
-        # # Simulate 2 grid buy orders filled
+        # Simulate 2 grid buy orders filled
         self.simulate_maker_market_trade(False, 5.0, 99.5)
         self.simulate_maker_market_trade(False, 5.0, 89.5)
         self.assertEqual(5, len(strategy.active_buys))
         self.assertEqual(4, len(strategy.active_sells))
-
