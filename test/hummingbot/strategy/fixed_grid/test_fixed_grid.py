@@ -1,31 +1,20 @@
-from typing import List, Optional
+from typing import Optional
 from decimal import Decimal
 import logging
 
 import pandas as pd
 import unittest
 
-from hummingbot.client.command.config_command import ConfigCommand
 from hummingbot.connector.exchange.paper_trade.paper_trade_exchange import QuantizationParams
-from hummingbot.core.data_type.limit_order import LimitOrder
-from hummingbot.core.data_type.order_book import OrderBook
-from hummingbot.core.data_type.order_book_row import OrderBookRow
 from hummingbot.core.clock import Clock, ClockMode
 from hummingbot.core.event.event_logger import EventLogger
 from hummingbot.core.event.events import (
     MarketEvent,
-    OrderBookTradeEvent,
-    OrderCancelledEvent)
-from hummingbot.core.data_type.common import PriceType, TradeType
-from hummingbot.model.sql_connection_manager import (
-    SQLConnectionManager,
-    SQLConnectionType,
-)
+    OrderBookTradeEvent)
+from hummingbot.core.data_type.common import TradeType
 from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
-from hummingbot.strategy.order_book_asset_price_delegate import OrderBookAssetPriceDelegate
 from hummingbot.strategy.fixed_grid.fixed_grid import FixedGridStrategy
 from test.mock.mock_paper_exchange import MockPaperExchange
-from test.mock.mock_asset_price_delegate import MockAssetPriceDelegate
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -210,7 +199,6 @@ class FixedGridUnitTest(unittest.TestCase):
         self.assertEqual(2, len(strategy.active_buys))
         self.assertEqual(7, len(strategy.active_sells))
 
-
         # Simulate grid buy order filled
         self.simulate_maker_market_trade(False, 60.0, 119.5)
         self.assertEqual(1, len(strategy.active_buys))
@@ -232,7 +220,6 @@ class FixedGridUnitTest(unittest.TestCase):
         self.simulate_maker_market_trade(True, 5.0, 111.0)
         self.assertEqual(7, len(strategy.active_buys))
         self.assertEqual(2, len(strategy.active_sells))
-
 
         # Simulate 2 grid buy orders filled
         self.simulate_maker_market_trade(False, 5.0, 99.5)
