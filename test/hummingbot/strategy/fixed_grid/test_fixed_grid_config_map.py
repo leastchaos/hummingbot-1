@@ -4,8 +4,8 @@ from copy import deepcopy
 from hummingbot.client.settings import AllConnectorSettings
 from hummingbot.strategy.fixed_grid.fixed_grid_config_map import (
     fixed_grid_config_map,
+    maker_trading_pair_prompt,
     order_amount_prompt,
-    maker_trading_pair_prompt
 )
 
 

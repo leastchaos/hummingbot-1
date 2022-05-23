@@ -2,14 +2,14 @@ import asyncio
 import json
 import time
 import unittest
-from typing import Dict, Awaitable
-from unittest.mock import patch, AsyncMock
+from test.hummingbot.connector.network_mocking_assistant import NetworkMockingAssistant
+from typing import Awaitable, Dict
+from unittest.mock import AsyncMock, patch
 
 import numpy as np
 
 from hummingbot.connector.exchange.gate_io.gate_io_api_user_stream_data_source import GateIoAPIUserStreamDataSource
 from hummingbot.connector.exchange.gate_io.gate_io_auth import GateIoAuth
-from test.hummingbot.connector.network_mocking_assistant import NetworkMockingAssistant
 
 
 class TestGateIoAPIUserStreamDataSource(unittest.TestCase):

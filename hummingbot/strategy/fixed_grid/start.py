@@ -1,12 +1,9 @@
-from typing import (
-    List,
-    Tuple,
-)
+from decimal import Decimal
+from typing import List, Tuple
 
-from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
 from hummingbot.strategy.fixed_grid import FixedGridStrategy
 from hummingbot.strategy.fixed_grid.fixed_grid_config_map import fixed_grid_config_map as c_map
-from decimal import Decimal
+from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
 
 
 def start(self):

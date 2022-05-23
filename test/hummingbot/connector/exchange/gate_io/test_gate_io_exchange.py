@@ -4,7 +4,8 @@ import re
 import time
 import unittest
 from decimal import Decimal
-from typing import Any, Awaitable, List, Dict
+from test.hummingbot.connector.network_mocking_assistant import NetworkMockingAssistant
+from typing import Any, Awaitable, Dict, List
 from unittest.mock import patch
 
 from aioresponses import aioresponses
@@ -17,7 +18,6 @@ from hummingbot.core.data_type.common import OrderType, TradeType
 from hummingbot.core.event.event_logger import EventLogger
 from hummingbot.core.event.events import MarketEvent
 from hummingbot.core.network_iterator import NetworkStatus
-from test.hummingbot.connector.network_mocking_assistant import NetworkMockingAssistant
 
 
 class TestGateIoExchange(unittest.TestCase):

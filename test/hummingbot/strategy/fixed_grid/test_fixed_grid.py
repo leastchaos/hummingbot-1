@@ -1,20 +1,18 @@
-from typing import Optional
-from decimal import Decimal
 import logging
+import unittest
+from decimal import Decimal
+from test.mock.mock_paper_exchange import MockPaperExchange
+from typing import Optional
 
 import pandas as pd
-import unittest
 
 from hummingbot.connector.exchange.paper_trade.paper_trade_exchange import QuantizationParams
 from hummingbot.core.clock import Clock, ClockMode
-from hummingbot.core.event.event_logger import EventLogger
-from hummingbot.core.event.events import (
-    MarketEvent,
-    OrderBookTradeEvent)
 from hummingbot.core.data_type.common import TradeType
-from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
+from hummingbot.core.event.event_logger import EventLogger
+from hummingbot.core.event.events import MarketEvent, OrderBookTradeEvent
 from hummingbot.strategy.fixed_grid.fixed_grid import FixedGridStrategy
-from test.mock.mock_paper_exchange import MockPaperExchange
+from hummingbot.strategy.market_trading_pair_tuple import MarketTradingPairTuple
 
 logging.basicConfig(level=logging.ERROR)
 

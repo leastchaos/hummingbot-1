@@ -1,13 +1,10 @@
 import unittest.mock
 from decimal import Decimal
+from test.hummingbot.strategy import assign_config_default
 
 import hummingbot.strategy.fixed_grid.start as strategy_start
 from hummingbot.connector.exchange_base import ExchangeBase
-
-from hummingbot.strategy.fixed_grid.fixed_grid_config_map import (
-    fixed_grid_config_map as c_map
-)
-from test.hummingbot.strategy import assign_config_default
+from hummingbot.strategy.fixed_grid.fixed_grid_config_map import fixed_grid_config_map as c_map
 
 
 class FixedGridStartTest(unittest.TestCase):
